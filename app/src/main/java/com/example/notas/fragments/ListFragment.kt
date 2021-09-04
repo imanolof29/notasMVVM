@@ -1,9 +1,7 @@
 package com.example.notas.fragments
 
-import android.graphics.Canvas
 import android.os.Bundle
 import android.view.*
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,21 +12,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.notas.NotasAdapter
 import com.example.notas.R
 import com.example.notas.data.NotaViewModel
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.example.notas.databinding.FragmentListBinding
 import com.google.android.material.snackbar.Snackbar
-import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
-
 
 class ListFragment : Fragment() {
 
-    private lateinit var recyclerView: RecyclerView
-
-    private lateinit var floatingActionButton: FloatingActionButton
+    private lateinit var binding: FragmentListBinding
 
     private lateinit var mNotaViewModel: NotaViewModel
 
     private lateinit var adapter: NotasAdapter
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,17 +30,15 @@ class ListFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_list, container, false)
 
-        //findViews
-        recyclerView = view.findViewById(R.id.recyclerview)
-        floatingActionButton = view.findViewById(R.id.floatingActionButton)
+        binding = FragmentListBinding.bind(view)
 
+        binding.toolbar.title = "Notas"
 
         //adapter
         adapter = NotasAdapter()
 
-        //recyclerview
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerview.adapter = adapter
+        binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
 
         //NotaViewModel
         mNotaViewModel = ViewModelProvider(this).get(NotaViewModel::class.java)
@@ -67,13 +58,13 @@ class ListFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 mNotaViewModel.borrarNota(adapter.getNotaAt(viewHolder.adapterPosition))
-                Snackbar.make(recyclerView, "Item borrado", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(binding.recyclerview, "Nota borrada", Snackbar.LENGTH_SHORT).show()
             }
-        }).attachToRecyclerView(recyclerView)
+        }).attachToRecyclerView(binding.recyclerview)
 
 
         //floating on click event
-        floatingActionButton.setOnClickListener{
+        binding.floatingActionButton.setOnClickListener{
             findNavController().navigate(R.id.action_listFragment_to_addFragment)
         }
 

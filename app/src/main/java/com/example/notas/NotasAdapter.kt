@@ -15,10 +15,14 @@ class NotasAdapter():RecyclerView.Adapter<NotasAdapter.ViewHolder>() {
         private val titulo:TextView = view.findViewById(R.id.tvTitulo)
         private val descripcion:TextView = view.findViewById(R.id.tvDescripcion)
 
+
+
         fun bind(nota:Nota){
             titulo.text = nota.titulo
             descripcion.text = nota.descripcion
         }
+
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
